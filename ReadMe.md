@@ -17,3 +17,7 @@
 - npm run consumer
   - npm run consumer:2
   - Or clone multiple `connectDirectExchange` function with same exchange but different `routing_key`
+
+## How to pass variable in package.json script:
+
+- npm run consumer exchange=jobExchange exchangeType=direct routingKey=software_engineer

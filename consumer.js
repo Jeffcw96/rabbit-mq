@@ -1,8 +1,9 @@
 const amqp = require("amqplib");
-connectQueue();
+const MessageBroker = require("./MessageBroker");
+// connectQueue();
 connectExchange();
-connectDirectExchange();
-connectDirectExchange2();
+// connectDirectExchange();
+// connectDirectExchange2();
 
 async function connectQueue() {
   try {
@@ -16,9 +17,8 @@ async function connectQueue() {
 
       setTimeout(() => {
         console.log("Received", JSON.parse(data.content.toString()));
-        channel.ack(data);
+        channel.nack(data, false, true);
       }, secs * 1000);
-      channel.close();
     });
   } catch (error) {
     console.error("Something wrong in RabbitMQ consumer queue", error);
@@ -27,38 +27,15 @@ async function connectQueue() {
 
 async function connectExchange() {
   try {
-    const exchange = "jobs_exchange";
-    const connection = await amqp.connect("amqp://localhost:5672");
-    const channel = await connection.createChannel();
-    await channel.assertExchange(exchange, "fanout", {
+    const { exchange, exchangeType, routingKey } = processScriptArgs();
+    const rabbitmq = new MessageBroker();
+    await rabbitmq.connect();
+    await rabbitmq.assertExchange(exchange, exchangeType, { durable: true });
+    const queue = await rabbitmq.bindExchangeQueue(exchange, routingKey, {
       durable: true,
+      expires: 2000,
     });
-
-    /*
-     *One of the reason put empty string is because `fanout` exchange will broadcast message to each queue,
-     *If we assertQueue with same queue name, only 1 consumer will receive the message as there are in the same queue.name
-     *Passing empty string will automatically create random queue name and exclusive flag will delete thr queue after it closed
-     */
-    const q = await channel.assertQueue("", {
-      durable: true,
-    });
-    // channel.prefetch(1); //ensure the queue doesn't keep dispatch message to consumer until they've ack the job
-
-    console.log(
-      " [*] Waiting for messages in %s. To exit press CTRL+C",
-      q.queue
-    );
-    await channel.bindQueue(q.queue, exchange, "");
-
-    channel.consume(q.queue, (data) => {
-      const secs = data.content.toString().split(".").length - 1;
-
-      setTimeout(() => {
-        console.log("Received", JSON.parse(data.content.toString()));
-        channel.ack(data);
-        channel.close();
-      }, secs * 1000);
-    });
+    rabbitmq.consumeMessage(queue);
   } catch (error) {
     console.error("Something wrong in RabbitMQ consumer exchange", error);
   }
@@ -76,11 +53,13 @@ async function connectDirectExchange() {
 
     const q = await channel.assertQueue("", {
       durable: true,
+      expires: 2000,
     });
 
     await channel.bindQueue(q.queue, exchange, routingKey);
 
     channel.consume(q.queue, (data) => {
+      console.log("data fields", data.fields);
       const secs = data.content.toString().split(".").length - 1;
 
       setTimeout(() => {
@@ -88,8 +67,7 @@ async function connectDirectExchange() {
           `Received ${exchange} >> ${routingKey}`,
           JSON.parse(data.content.toString())
         );
-        channel.ack(data);
-        channel.close();
+        channel.ack(data, false, true);
       }, secs * 1000);
     });
   } catch (error) {
@@ -109,6 +87,7 @@ async function connectDirectExchange2() {
 
     const q = await channel.assertQueue("", {
       durable: true,
+      expires: 2000,
     });
 
     await channel.bindQueue(q.queue, exchange, routingKey);
@@ -122,10 +101,21 @@ async function connectDirectExchange2() {
           JSON.parse(data.content.toString())
         );
         channel.ack(data);
-        channel.close();
       }, secs * 1000);
     });
   } catch (error) {
     console.error("Something wrong in consumer direct exchange");
   }
+}
+
+function processScriptArgs() {
+  const args = process.argv.slice(2, process.argv.length);
+  return args.reduce((acc, val) => {
+    const [key, value] = val.split("=");
+    if (key && value) {
+      return { ...acc, [key]: value };
+    }
+
+    return acc;
+  }, {});
 }

@@ -1,6 +1,8 @@
 const amqp = require("amqplib");
 connectQueue();
 connectExchange();
+connectDirectExchange();
+connectDirectExchange2();
 
 async function connectQueue() {
   try {
@@ -9,7 +11,7 @@ async function connectQueue() {
     const channel = await connection.createChannel();
     await channel.assertQueue(queueName, { durable: true });
     channel.prefetch(1); //ensure the queue doesn't keep dispatch message to consumer until they've ack the job
-    await channel.consume(queueName, (data) => {
+    channel.consume(queueName, (data) => {
       const secs = data.content.toString().split(".").length - 1;
 
       setTimeout(() => {
@@ -38,6 +40,7 @@ async function connectExchange() {
      */
     const q = await channel.assertQueue("", {
       durable: true,
+      expires: 2000,
     });
     // channel.prefetch(1); //ensure the queue doesn't keep dispatch message to consumer until they've ack the job
 
@@ -47,7 +50,7 @@ async function connectExchange() {
     );
     await channel.bindQueue(q.queue, exchange, "");
 
-    await channel.consume(q.queue, (data) => {
+    channel.consume(q.queue, (data) => {
       const secs = data.content.toString().split(".").length - 1;
 
       setTimeout(() => {
@@ -57,5 +60,72 @@ async function connectExchange() {
     });
   } catch (error) {
     console.error("Something wrong in RabbitMQ consumer exchange", error);
+  }
+}
+
+async function connectDirectExchange() {
+  try {
+    const routingKey = "software_engineer";
+    const exchange = "jobs_direct";
+    const connection = await amqp.connect("amqp://localhost:5672");
+    const channel = await connection.createChannel();
+    await channel.assertExchange(exchange, "direct", {
+      durable: true,
+    });
+
+    const q = await channel.assertQueue("", {
+      durable: true,
+      expires: 2000,
+    });
+
+    await channel.bindQueue(q.queue, exchange, routingKey);
+
+    channel.consume(q.queue, (data) => {
+      console.log("data fields", data.fields);
+      const secs = data.content.toString().split(".").length - 1;
+
+      setTimeout(() => {
+        console.log(
+          `Received ${exchange} >> ${routingKey}`,
+          JSON.parse(data.content.toString())
+        );
+        channel.ack(data);
+      }, secs * 1000);
+    });
+  } catch (error) {
+    console.error("Something wrong in consumer direct exchange");
+  }
+}
+
+async function connectDirectExchange2() {
+  try {
+    const routingKey = "project_manager";
+    const exchange = "jobs_direct";
+    const connection = await amqp.connect("amqp://localhost:5672");
+    const channel = await connection.createChannel();
+    await channel.assertExchange(exchange, "direct", {
+      durable: true,
+    });
+
+    const q = await channel.assertQueue("", {
+      durable: true,
+      expires: 2000,
+    });
+
+    await channel.bindQueue(q.queue, exchange, routingKey);
+
+    channel.consume(q.queue, (data) => {
+      const secs = data.content.toString().split(".").length - 1;
+
+      setTimeout(() => {
+        console.log(
+          `Received ${exchange} >> ${routingKey}`,
+          JSON.parse(data.content.toString())
+        );
+        channel.ack(data);
+      }, secs * 1000);
+    });
+  } catch (error) {
+    console.error("Something wrong in consumer direct exchange");
   }
 }
