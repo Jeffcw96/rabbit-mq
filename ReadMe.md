@@ -2,8 +2,8 @@
 
 #### Exchange
 
-- npm run consumer exchange=jobExchange exchangeType=direct routingKey=software_engineer
+- npm run consumer process=exchange exchange=jobExchange exchangeType=direct routingKey=software_engineer
 
 #### Queue
 
-- npm run consumer queue=job
+- npm run consumer process=queue queue=job

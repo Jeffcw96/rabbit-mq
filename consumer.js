@@ -1,10 +1,19 @@
-const amqp = require("amqplib");
+const processScriptArgs = require("./processScriptArgs");
 const MessageBroker = require("./MessageBroker");
-// connectQueue();
-connectExchange();
+const { process } = processScriptArgs();
+
+switch (process) {
+  case "exchange":
+    connectExchange();
+    break;
+  case "queue":
+    connectQueue();
+    break;
+}
 
 async function connectQueue() {
   try {
+    console.log("connectQueue function");
     const { queue } = processScriptArgs();
     const rabbitmq = new MessageBroker();
     await rabbitmq.connect();
@@ -17,6 +26,7 @@ async function connectQueue() {
 
 async function connectExchange() {
   try {
+    console.log("connectExchange function");
     const { exchange, exchangeType, routingKey } = processScriptArgs();
     const rabbitmq = new MessageBroker();
     await rabbitmq.connect();
@@ -29,16 +39,4 @@ async function connectExchange() {
   } catch (error) {
     console.error("Something wrong in RabbitMQ consumer exchange", error);
   }
-}
-
-function processScriptArgs() {
-  const args = process.argv.slice(2, process.argv.length);
-  return args.reduce((acc, val) => {
-    const [key, value] = val.split("=");
-    if (key && value) {
-      return { ...acc, [key]: value };
-    }
-
-    return acc;
-  }, {});
 }
