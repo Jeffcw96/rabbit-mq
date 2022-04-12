@@ -21,3 +21,4 @@
 ## How to pass variable in package.json script:
 
 - npm run consumer exchange=jobExchange exchangeType=direct routingKey=software_engineer
+- npm run consumer queue=job

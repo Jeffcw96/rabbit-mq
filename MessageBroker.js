@@ -11,9 +11,11 @@ class MessageBroker {
     this.channel = await connection.createChannel();
   }
 
+  async assertQueue(queueName, option = {}) {
+    await this.channel.assertQueue(queueName, option);
+  }
+
   async sendMessage(queueName, payload) {
-    await this.channel.assertQueue(queueName, { durable: true });
-    console.log("assert");
     await this.channel.sendToQueue(
       queueName,
       Buffer.from(JSON.stringify(payload)),
