@@ -26,23 +26,7 @@ class MessageBroker {
     );
   }
 
-  async publishExchange(exchange, exchangeType, payload, routingKey = "") {
-    await this.channel.assertExchange(exchange, exchangeType, {
-      durable: true,
-    });
-    this.channel.publish(
-      exchange,
-      routingKey,
-      Buffer.from(JSON.stringify(payload))
-    );
-  }
-
-  async publishExchangeVersionTwo({
-    exchange,
-    exchangeType,
-    body,
-    options = {},
-  }) {
+  async publishExchange({ exchange, exchangeType, body, options = {} }) {
     const { payload, properties } = body;
     await this.assertExchange(exchange, exchangeType, options);
     await this.channel.assertExchange(exchange, exchangeType, {
