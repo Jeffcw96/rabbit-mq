@@ -28,7 +28,13 @@ router.post("/:exchange/exchange/:exchangeType", async (req, res) => {
       body,
       params: { exchange, exchangeType },
     } = req;
-    const options = { durable: true };
+
+    const headers = body.properties?.headers || {};
+    const options = {
+      durable: true,
+      headers,
+    };
+
     const rabbitmq = new MessageBroker();
     const isValidExchangeType = rabbitmq.isValidExchangeType(exchangeType);
 

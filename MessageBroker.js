@@ -35,7 +35,8 @@ class MessageBroker {
     this.channel.publish(
       exchange,
       properties.routing_key,
-      Buffer.from(JSON.stringify(payload))
+      Buffer.from(JSON.stringify(payload)),
+      options
     );
   }
 
@@ -52,14 +53,15 @@ class MessageBroker {
     const { queue } = await this.channel.assertQueue("", option);
 
     // channel.prefetch(1); //ensure the queue doesn't keep dispatch message to consumer until they've ack the job
-    await this.channel.bindQueue(queue, exchange, routingKey);
+    await this.channel.bindQueue(queue, exchange, routingKey, option.headers);
+
     return queue;
   }
 
   consumeMessage(queue) {
     this.channel.consume(queue, (data) => {
+      console.log("data", data);
       const secs = data.content.toString().split(".").length - 1 || 1;
-
       setTimeout(() => {
         console.log("Received", JSON.parse(data.content.toString()));
         this.channel.ack(data, false, true);
