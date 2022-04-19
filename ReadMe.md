@@ -1,3 +1,11 @@
+## Endpoints:
+
+| Description                        | Url                                                  |
+| ---------------------------------- | ---------------------------------------------------- |
+| Post Queue                         | http://localhost:3000/api/publish/testing            |
+| Topic \| Fanout \| Direct exchange | http://localhost:3000/api/family/exchange/topic      |
+| Headers exchange                   | http://localhost:3000/api/transport/exchange/headers |
+
 ## How run consumer command:
 
 ### Exchange
@@ -10,7 +18,7 @@
 
 #### Example
 
-- npm run consumer process=exchange exchange=transport exchangeType=headers routingKey='' matchingType=any headers='{"transport":"car", "isVehicle":"true"}'
+- npm run consumer process=exchange exchange=transport exchangeType=headers routingKey='' headers='{"transport":"car", "isVehicle":"true", "x-match":"all"}'
 
 Where :
 

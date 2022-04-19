@@ -61,11 +61,8 @@ class MessageBroker {
   consumeMessage(queue) {
     this.channel.consume(queue, (data) => {
       console.log("data", data);
-      const secs = data.content.toString().split(".").length - 1 || 1;
-      setTimeout(() => {
-        console.log("Received", JSON.parse(data.content.toString()));
-        this.channel.ack(data, false, true);
-      }, secs * 1000);
+      console.log("Received", JSON.parse(data.content.toString()));
+      this.channel.ack(data, false, true);
     });
   }
 

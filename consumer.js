@@ -33,7 +33,6 @@ async function connectExchange() {
       routingKey,
       headers = {},
     } = processScriptArgs();
-    console.log("headers", headers);
     const rabbitmq = new MessageBroker();
     await rabbitmq.connect();
     await rabbitmq.assertExchange(exchange, exchangeType, {
@@ -42,7 +41,7 @@ async function connectExchange() {
     const queue = await rabbitmq.bindExchangeQueue(exchange, routingKey, {
       durable: true,
       expires: 2000,
-      headers: { transport: "car", a: "asd", "x-match": "any" }, //change all to any to see effect
+      headers,
     });
     rabbitmq.consumeMessage(queue);
   } catch (error) {
