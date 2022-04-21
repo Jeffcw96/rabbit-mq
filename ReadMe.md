@@ -1,10 +1,9 @@
 ## Endpoints:
 
-| Description                        | Url                                                  |
-| ---------------------------------- | ---------------------------------------------------- |
-| Post Queue                         | http://localhost:3000/api/publish/testing            |
-| Topic \| Fanout \| Direct exchange | http://localhost:3000/api/family/exchange/topic      |
-| Headers exchange                   | http://localhost:3000/api/transport/exchange/headers |
+| Description   | Url                                                              |
+| ------------- | ---------------------------------------------------------------- |
+| Post Queue    | `http://localhost:3000/api/publish/:queueName`                   |
+| Post exchange | `http://localhost:3000/api/:exchangeName/exchange/:exchangeType` |
 
 ## How run consumer command:
 
