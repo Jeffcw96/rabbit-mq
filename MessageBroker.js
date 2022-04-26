@@ -11,8 +11,8 @@ class MessageBroker {
     this.channel = await connection.createChannel();
   }
 
-  async assertQueue(queueName, option = {}) {
-    await this.channel.assertQueue(queueName, option);
+  async assertQueue(queueName, options = {}) {
+    await this.channel.assertQueue(queueName, options);
   }
 
   async sendMessage(queueName, payload) {
@@ -29,9 +29,6 @@ class MessageBroker {
   async publishExchange({ exchange, exchangeType, body, options = {} }) {
     const { payload, properties } = body;
     await this.assertExchange(exchange, exchangeType, options);
-    await this.channel.assertExchange(exchange, exchangeType, {
-      durable: true,
-    });
     this.channel.publish(
       exchange,
       properties.routing_key,
@@ -44,16 +41,16 @@ class MessageBroker {
     await this.channel.assertExchange(exchange, exchangeType, options);
   }
 
-  async bindExchangeQueue(exchange, routingKey, option = {}) {
+  async bindExchangeQueue(exchange, routingKey, options = {}) {
     /*
      *One of the reason put empty string is because `fanout` exchange will broadcast message to each queue,
      *If we assertQueue with same queue name, only 1 consumer will receive the message as there are in the same queue.name
      *Passing empty string will automatically create random queue name and exclusive flag will delete thr queue after it closed
      */
-    const { queue } = await this.channel.assertQueue("", option);
+    const { queue } = await this.channel.assertQueue("", options);
 
     // channel.prefetch(1); //ensure the queue doesn't keep dispatch message to consumer until they've ack the job
-    await this.channel.bindQueue(queue, exchange, routingKey, option.headers);
+    await this.channel.bindQueue(queue, exchange, routingKey, options.headers);
 
     return queue;
   }
