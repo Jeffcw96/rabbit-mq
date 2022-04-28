@@ -57,7 +57,8 @@ class MessageBroker {
 
   consumeMessage(queue) {
     this.channel.consume(queue, (data) => {
-      console.log("data", data);
+      // Uncomment this to see the data properties and other info
+      // console.log("data", data);
       console.log("Received", JSON.parse(data.content.toString()));
       this.channel.ack(data, false, true);
     });
