@@ -90,7 +90,7 @@ const QUEUE_METADATA = [
     queue: "", //empty string to generate random queue name
     exchange: "sport",
     exchangeType: "headers",
-    routingKey: "", // eg: animal.mammal.tiger = true ; animal.mammals.tiger.strong = true ; animalxxx.mamal = false
+    routingKey: "",
     handler: exchangeHandler(false),
     options: {
       durable: true,
@@ -107,7 +107,7 @@ const QUEUE_METADATA = [
     queue: "", //empty string to generate random queue name
     exchange: "sport",
     exchangeType: "headers",
-    routingKey: "", // eg: animal.mammal.tiger = true ; animal.mammals.tiger.strong = true ; animalxxx.mamal = false
+    routingKey: "",
     handler: exchangeHandler(false),
     options: {
       durable: true,
@@ -123,7 +123,7 @@ const QUEUE_METADATA = [
     queue: "", //empty string to generate random queue name
     exchange: "sport",
     exchangeType: "headers",
-    routingKey: "", // eg: animal.mammal.tiger = true ; animal.mammals.tiger.strong = true ; animalxxx.mamal = false
+    routingKey: "",
     handler: exchangeHandler(false),
     options: {
       durable: true,
