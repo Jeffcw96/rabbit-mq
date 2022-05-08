@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "e265abb8-35ec-4020-87d5-a48b71f36c10",
+		"name": "RabbitMq",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Queue",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"message\":\"Hello.........................................\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/queue/testing",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"queue",
+						"testing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Direct exchange with dead_letter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\":{\n        \"name\": \"Jeff\",\n        \"yearOfExperience\": 2\n    },\n    \"properties\":{\n        \"routing_key\":\"software_engineer\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/jobs/exchange/direct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"jobs",
+						"exchange",
+						"direct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Header exchange",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\":{\n        \"name\":\"basketball\"\n    },\n    \"properties\":{\n        \"routing_key\":\"\",\n        \"headers\":{\n            \"noOfPlayer\": 10,\n            \"duration\":40,\n            \"timeUnit\": \"minutes\"\n        }        \n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/sport/exchange/headers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sport",
+						"exchange",
+						"headers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fanout exchange",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\":{\n        \"vehicleType\": \"car\",\n        \"numberOfPassenger\": 3\n    },\n    \"properties\":{\n        \"routing_key\":\"\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/transports/exchange/fanout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"transports",
+						"exchange",
+						"fanout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Topic exchange",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\":{\n        \"numberOfAnimal\":10        \n    },\n    \"properties\":{\n        \"routing_key\":\"animal.mammal.tiger\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/animals/exchange/topic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"animals",
+						"exchange",
+						"topic"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
