@@ -38,12 +38,6 @@ class QueueWorker {
   async close() {
     await this.channel.close();
   }
-
-  isValidExchangeType(exchangeType) {
-    return ["fanout", "direct", "topic", "headers"].some(
-      (exchange) => exchange === exchangeType
-    );
-  }
 }
 
 const queueWorker = new QueueWorker();

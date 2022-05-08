@@ -76,20 +76,6 @@ class RabbitMQ {
       (exchange) => exchange === exchangeType
     );
   }
-
-  consumeDeadLetterMessage(queue) {
-    this.channel.consume(queue, (message) => {
-      this.processDeadQueue(message);
-    });
-  }
-  processDeadQueue(msg) {
-    if (msg.properties.headers["x-death"][0].count > 4) {
-      this.channel.ack(msg);
-    } else {
-      console.log("DEAD QUEUE", msg.properties.headers["x-death"]);
-      this.channel.reject(msg, false);
-    }
-  }
 }
 
 const msgBroker = new RabbitMQ();

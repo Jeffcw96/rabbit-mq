@@ -26,7 +26,7 @@ async function postExchange(req, res) {
     });
     res.send("Done");
   } catch (error) {
-    console.error(error);
+    console.error("post exchange error", error);
     res.status(500).json(error);
   }
 }

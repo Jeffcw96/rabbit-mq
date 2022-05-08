@@ -11,7 +11,7 @@ async function postQueue(req, res) {
 
     res.send("Done");
   } catch (error) {
-    console.error("errorrr 1 ", error);
+    console.error("post queue error", error);
     res.status(500).json(error);
   }
 }
