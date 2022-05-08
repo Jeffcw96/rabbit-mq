@@ -22,7 +22,12 @@ class QueueWorker {
 
       await this.channel.assertQueue(data.queue, data.options);
 
-      await this.channel.bindQueue(data.queue, data.exchange, data.routingKey);
+      await this.channel.bindQueue(
+        data.queue,
+        data.exchange,
+        data.routingKey,
+        data.headers
+      );
 
       this.channel.consume(data.queueName, (msg) => {
         data.handler(msg, this.channel);
