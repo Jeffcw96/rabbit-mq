@@ -1,5 +1,4 @@
 function exchangeHandler(rejectFlag = false) {
-  //Figure out why cannot import in outer function scope
   return function (msg, channel) {
     try {
       if (rejectFlag) {
