@@ -1,9 +1,6 @@
 function deadLetterHandler() {
-  return function (msg) {
-    const queueWorker = require("../QueueWorker");
-    const channel = queueWorker.getChannel();
+  return function (msg, channel) {
     console.log("dead-letter msg", JSON.parse(msg.content.toString()));
-    console.log("x-death properties", msg.properties.headers["x-death"][0]);
     if (msg.properties.headers["x-death"][0].count > 4) {
       channel.ack(msg);
     } else {
