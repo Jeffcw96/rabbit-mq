@@ -2,6 +2,17 @@ const deadLetterHandler = require("../messageHandler/deadLetterHandler");
 const exchangeHandler = require("../messageHandler/exchangeHandler");
 
 const QUEUE_METADATA = [
+  /*
+    Routing key is required for direct exchange. To create a dead-letter service:
+      1. Establish new exchange for dead-letter
+      2. Specify the dead-letter exchange type
+      3. Provide routing key if it's direct exchange
+      4. Include the dead-letter exchange and routing key in your main exchange under deadLetterExchange and deadLetterRoutingKey parameters
+      5. The message will be rerouted to the specified dead-letter exchange once it's rejected/ negative acknowledged
+      6. To create a retry mechanism
+        - Under the dead-letter exchange, specify your deadLetterExchange and deadLetterRoutingKey parameters based on your exchange that you want to return.
+        - Then inside dead-letter exchange, we can reject/nack the message so that it will refer these info and rerouted back to the main exchange
+  */
   {
     queue: "job-queue",
     exchange: "job",
