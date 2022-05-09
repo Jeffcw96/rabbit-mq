@@ -1,14 +1,17 @@
 const amqp = require("amqplib");
 const rabbitmqUrl = "amqp://localhost:5672";
-class MessageBroker {
-  constructor() {
-    this.url = rabbitmqUrl;
-    this.channel = null;
-  }
+class RabbitMQ {
+  constructor() {}
 
   async connect() {
-    const connection = await amqp.connect(this.url);
-    this.channel = await connection.createChannel();
+    try {
+      const connection = await amqp.connect(rabbitmqUrl);
+      this.channel = await connection.createChannel();
+      console.log("connected RabbitMQ");
+    } catch (error) {
+      console.log("fail to connect RabbitMQ");
+      throw error;
+    }
   }
 
   async assertQueue(queueName, options = {}) {
@@ -56,11 +59,11 @@ class MessageBroker {
   }
 
   consumeMessage(queue) {
-    this.channel.consume(queue, (data) => {
-      // Uncomment this to see the data properties and other info
-      // console.log("data", data);
-      console.log("Received", JSON.parse(data.content.toString()));
-      this.channel.ack(data, false, true);
+    this.channel.consume(queue, (message) => {
+      // Uncomment this to see the message properties and other info
+      // console.log("message", message);
+      console.log("Received", JSON.parse(message.content.toString()));
+      this.channel.ack(message, false, true);
     });
   }
 
@@ -75,4 +78,5 @@ class MessageBroker {
   }
 }
 
-module.exports = MessageBroker;
+const msgBroker = new RabbitMQ();
+module.exports = msgBroker;

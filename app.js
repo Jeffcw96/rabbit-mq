@@ -1,8 +1,10 @@
 const express = require("express");
-const app = express();
 const routers = require("./routers");
+const rabbitMQ = require("./utils/RabbitMQ");
+const app = express();
 const port = 3000;
 
+rabbitMQ.connect();
 app.use(express.urlencoded());
 app.use(express.json());
 
