@@ -47,7 +47,7 @@ project
 
 | Description   | Url                                                          |
 | ------------- | ------------------------------------------------------------ |
-| Post Queue    | `http://localhost:3000/api/publish/:queueName`               |
+| Post Queue    | `http://localhost:3000/api/queue/:queue`                     |
 | Post exchange | `http://localhost:3000/api/:exchangeType/exchange/:exchange` |
 
 Please import the postman collection under `postmanCollection -> apis.json` directory to get the example of each exchange type
