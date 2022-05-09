@@ -45,9 +45,9 @@ project
 
 ## Endpoints:
 
-| Description   | Url                                                              |
-| ------------- | ---------------------------------------------------------------- |
-| Post Queue    | `http://localhost:3000/api/publish/:queueName`                   |
-| Post exchange | `http://localhost:3000/api/:exchangeName/exchange/:exchangeType` |
+| Description   | Url                                                          |
+| ------------- | ------------------------------------------------------------ |
+| Post Queue    | `http://localhost:3000/api/publish/:queueName`               |
+| Post exchange | `http://localhost:3000/api/:exchangeType/exchange/:exchange` |
 
 Please import the postman collection under `postmanCollection -> apis.json` directory to get the example of each exchange type

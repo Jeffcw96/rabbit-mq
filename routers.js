@@ -4,7 +4,7 @@ const postExchange = require("./controller/postExchange");
 
 const router = express.Router();
 
-router.post("/queue/:queue_name", postQueue);
+router.post("/queue/:queueName", postQueue);
 router.post("/:exchangeType/exchange/:exchange", postExchange);
 
 module.exports = router;
