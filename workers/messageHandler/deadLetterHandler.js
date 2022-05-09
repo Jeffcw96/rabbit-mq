@@ -1,6 +1,8 @@
+const processLogInfo = require("../../utils/processLogInfo");
 function deadLetterHandler() {
   return function (msg, channel) {
-    console.log("dead-letter msg", JSON.parse(msg.content.toString()));
+    const logInfo = processLogInfo(msg);
+    console.table(logInfo);
     if (msg.properties.headers["x-death"][0].count > 4) {
       channel.ack(msg);
     } else {
