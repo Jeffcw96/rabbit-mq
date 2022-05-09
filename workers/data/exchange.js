@@ -3,25 +3,26 @@ const exchangeHandler = require("../messageHandler/exchangeHandler");
 
 const QUEUE_METADATA = [
   {
-    queue: "email-queue",
-    exchange: "mail_exchange",
+    queue: "job-queue",
+    exchange: "job",
     exchangeType: "direct",
-    routingKey: "email-queue-key",
+    routingKey: "job-key",
     handler: exchangeHandler(true),
     options: {
-      deadLetterExchange: "dlx_exchange",
-      deadLetterRoutingKey: "dlx_key",
+      deadLetterExchange: "dead-letter",
+      deadLetterRoutingKey: "dead-letter-job",
       durable: true,
     },
   },
   {
     queue: "dead-letter-queue",
-    exchange: "dlx_exchange",
+    exchange: "dead-letter",
     exchangeType: "direct",
+    routingKey: "dead-letter-job",
     handler: deadLetterHandler(),
     options: {
-      deadLetterExchange: "main_exchange",
-      deadLetterRoutingKey: "email-queue-key",
+      deadLetterExchange: "job",
+      deadLetterRoutingKey: "job-key",
       durable: true,
     },
   },
@@ -80,11 +81,11 @@ const QUEUE_METADATA = [
             "noOfPlayer": 10,
             "duration":40,
             "timeUnit": "minutes"
-        }   
-      - x-match:all ; The headers element's key and value must be exactly matched. 
+        }
+      - x-match:all ; The headers element's key and value must be exactly matched.
         - if let's say we only have noOfPlayer and duration keys but their value is the same. It will still route to the queue
         - However, if we have 2 same & 1 different header's key, it will not route to the queue
-      - x-match: any ; One of the headers element's key and value must be exactly matched.        
+      - x-match: any ; One of the headers element's key and value must be exactly matched.
   */
   {
     queue: "", //empty string to generate random queue name
