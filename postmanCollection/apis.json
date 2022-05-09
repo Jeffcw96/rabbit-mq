@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"payload\":{\n        \"name\": \"Jeff\",\n        \"yearOfExperience\": 2\n    },\n    \"properties\":{\n        \"routing_key\":\"software_engineer\"\n    }\n}",
+					"raw": "{\n    \"payload\":{\n        \"name\": \"Jeff\",\n        \"yearOfExperience\": 2,\n        \"position\": \"Software Engineer\"\n    },\n    \"properties\":{\n        \"routing_key\":\"job-key\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -50,7 +50,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/jobs/exchange/direct",
+					"raw": "http://localhost:3000/api/direct/exchange/job",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -58,9 +58,9 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"jobs",
+						"direct",
 						"exchange",
-						"direct"
+						"job"
 					]
 				}
 			},
@@ -81,7 +81,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/sport/exchange/headers",
+					"raw": "http://localhost:3000/api/headers/exchange/sport",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -89,9 +89,9 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"sport",
+						"headers",
 						"exchange",
-						"headers"
+						"sport"
 					]
 				}
 			},
@@ -112,7 +112,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/transports/exchange/fanout",
+					"raw": "http://localhost:3000/api/fanout/exchange/transports",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -120,9 +120,9 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"transports",
+						"fanout",
 						"exchange",
-						"fanout"
+						"transports"
 					]
 				}
 			},
@@ -143,7 +143,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/animals/exchange/topic",
+					"raw": "http://localhost:3000/api/topic/exchange/animals",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -151,9 +151,9 @@
 					"port": "3000",
 					"path": [
 						"api",
-						"animals",
+						"topic",
 						"exchange",
-						"topic"
+						"animals"
 					]
 				}
 			},
