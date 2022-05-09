@@ -4,10 +4,10 @@ async function postQueue(req, res) {
   try {
     const {
       body: payload,
-      params: { queueName },
+      params: { queue },
     } = req;
 
-    await rabbitMQ.sendMessage(queueName, payload);
+    await rabbitMQ.sendMessage(queue, payload);
 
     res.send("Done");
   } catch (error) {
