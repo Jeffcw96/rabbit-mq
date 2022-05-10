@@ -1,4 +1,5 @@
 const rabbitMQ = require("../utils/RabbitMQ");
+const uniqueId = require("../utils/uniqueId");
 async function postExchange(req, res) {
   try {
     const {
@@ -6,10 +7,23 @@ async function postExchange(req, res) {
       params: { exchange, exchangeType },
     } = req;
 
+    /*
+      Messages marked as 'persistent' that are delivered to 'durable' queues will be logged to disk. 
+      Durable queues are recovered in the event of a crash, along with any persistent messages they stored prior to the crash.
+    */
+    const persistent = 2;
+    const type = `${exchange}.created`;
     const headers = body.properties?.headers || {};
     const options = {
+      appId: exchange,
+      contentType: "application/json",
+      deliveryMode: persistent,
       durable: true,
       headers,
+      messageId: uniqueId(),
+      priority: 5,
+      timestamp: Date.now(),
+      type,
     };
 
     const isValidExchangeType = rabbitMQ.isValidExchangeType(exchangeType);
