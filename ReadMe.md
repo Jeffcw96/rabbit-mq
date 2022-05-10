@@ -1,3 +1,7 @@
+## Prerequisite
+
+Please ensure you've already installed [RabbitMQ](https://www.rabbitmq.com/download.html) in your machine
+
 ## How to Use
 
 Install the necessary dependencies
