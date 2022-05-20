@@ -1,6 +1,6 @@
 const amqp = require("amqplib");
 const QUEUE_METADATA = require("./data/exchange");
-const rabbitmqUrl = "amqp://localhost:5672";
+const rabbitmqUrl = "amqp://localhost:3031";
 
 class QueueWorker {
   constructor() {}
