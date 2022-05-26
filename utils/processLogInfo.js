@@ -1,5 +1,6 @@
 function processLogInfo(msg) {
   return {
+    consumerTag: msg.fields.consumerTag,
     exchange: msg.fields.exchange,
     routingKey: msg.fields.routingKey,
     message: msg.content.toString(),
